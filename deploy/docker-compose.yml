@@ -1,0 +1,83 @@
+version: '2'
+
+networks:
+  phoenixnet:
+    driver: bridge
+
+services:
+  mariadb:
+    image: 'dimaskiddo/debian:mariadb-10.2'
+    working_dir: /var/lib/mysql/data
+    networks:
+      - phoenixnet
+    environment:
+      - MYSQL_DEFAULTS_FILE=/etc/mysql-config/my.cnf
+    env_file:
+      - ../env/dev/mariadb.env
+    volumes:
+      - ../data/mariadb/config:/etc/mysql-config
+      - ../data/mariadb/data:/var/lib/mysql/data
+    restart: unless-stopped
+
+  redis:
+    image: 'dimaskiddo/alpine:redis-3.2'
+    working_dir: /var/lib/redis/data
+    networks:
+      - phoenixnet
+    env_file:
+      - ../env/dev/redis.env
+    volumes:
+      - ../data/redis:/var/lib/redis/data
+    restart: unless-stopped
+
+  minio:
+    image: 'dimaskiddo/alpine:minio-1.0'
+    working_dir: /data/minio
+    networks:
+      - phoenixnet
+    ports:
+      - 9000:9000
+    env_file:
+      - ../env/dev/minio.env
+    volumes:
+      - ../data/minio:/data/minio
+    restart: unless-stopped
+
+  adminer:
+    image: 'dimaskiddo/alpine:adminer-4.6.2'
+    working_dir: /var/www/data/html
+    networks:
+      - phoenixnet
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+
+  node:
+    build:
+      context: ../build/node
+      dockerfile: ./Dockerfile
+    image: 'app:node'
+    working_dir: /usr/src/app
+    networks:
+      - phoenixnet
+    volumes:
+      - ../data/app:/usr/src/app
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ../build/app
+      dockerfile: ./Dockerfile
+    image: 'app:phoenix'
+    working_dir: /usr/src/app
+    networks:
+      - phoenixnet
+    ports:
+      - 4000:4000
+    env_file:
+      - ../env/dev/app.env
+    volumes:
+      - ../data/app:/usr/src/app
+    restart: unless-stopped
