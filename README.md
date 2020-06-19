@@ -18,7 +18,7 @@ Prequisites package:
 Standard deployment:
 * Clone this repository to your current directory, make sure it's empty
 ```
-git clone -b master https://github.com/dimaskiddo/docker-php-template.git .
+git clone -b master https://github.com/dimaskiddo/docker-phoenix-template.git .
 ```
 * Change environment variables in ```env/dev``` directory
 * Goto ```deploy``` directory
