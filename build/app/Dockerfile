@@ -1,4 +1,4 @@
-FROM dimaskiddo/alpine:elixir-1.10.3
+FROM dimaskiddo/alpine:elixir-1.10
 MAINTAINER Team Name <team@mail.com>
 
 # Set Environment Variables
