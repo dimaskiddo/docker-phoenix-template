@@ -21,6 +21,11 @@ Standard deployment:
 git clone -b master https://github.com/dimaskiddo/docker-phoenix-template.git .
 ```
 * Change environment variables in ```env/dev``` directory
+* Prepare Elixir Phoenix deployment
+```
+chmod +x prepare.sh
+./prepare.sh
+```
 * Goto ```deploy``` directory
 ```
 cd deploy
