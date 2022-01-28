@@ -1,11 +1,11 @@
-FROM dimaskiddo/alpine:nodejs-10
+FROM dimaskiddo/debian-buster:nodejs-14
 MAINTAINER Team Name <team@mail.com>
 
 # Run as Root User
 USER root
 
 # Do Some Customization if Needed Here
-RUN apk add --no-cache --update
+RUN apt-get update
 
-# Run Command
-CMD ["tail","-F","/dev/null"]
+# Run as Non-Root User
+USER user
