@@ -8,5 +8,8 @@ USER root
 RUN apk add --no-cache --update --virtual .build-dep \
       build-base
 
-# Run Command
+# Run as Non-Root User
+USER user
+
+# Make it Run Forever
 CMD ["tail","-F","/dev/null"]
